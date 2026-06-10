@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/USER/Downloads/body_type_quiz.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 체형 찾기 — Knockit 바캉스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./내 체형 찾기 — Knockit 바캉스_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #F5F0FF;
+    --card: #FFFFFF;
+    --pop1: #C9B8FF;
+    --pop2: #FFB6D9;
+    --pop3: #FFEC6E;
+    --pop4: #B8F0E6;
+    --ink: #1A1035;
+    --muted: #7A6EA0;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --accent: #7C5CFC;
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 80px;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    width: 100%;
+    background: var(--ink);
+    padding: 44px 24px 38px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: var(--pop1);
+    opacity: 0.15;
+    top: -130px; left: -70px;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: var(--pop2);
+    opacity: 0.15;
+    bottom: -90px; right: -50px;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pop3);
+    background: rgba(255,236,110,0.12);
+    border: 1px solid rgba(255,236,110,0.3);
+    padding: 5px 14px;
+    border-radius: 40px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: clamp(28px, 7vw, 46px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title em { font-style: normal; color: var(--pop1); }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    width: 100%;
+    max-width: 480px;
+    padding: 26px 24px 0;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+  }
+  .progress-label { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
+  .progress-count {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 13px; font-weight: 700; color: var(--ink);
+  }
+  .progress-track {
+    width: 100%; height: 6px;
+    background: rgba(26,16,53,0.1);
+    border-radius: 10px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 10px;
+    background: linear-gradient(90deg, var(--pop1), var(--pop2));
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* CARD */
+  .card {
+    width: calc(100% - 48px);
+    max-width: 480px;
+    margin: 20px 0 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px 24px 24px;
+    box-shadow: 0 4px 32px rgba(26,16,53,0.08);
+  }
+
+  /* STEP */
+  .step { display: none; }
+  .step.active { display: block; animation: slideUp 0.32s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-num {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 17px; font-weight: 700;
+    line-height: 1.55; color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .q-text strong { color: var(--accent); }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .opt {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px 15px;
+    border: 1.5px solid rgba(26,16,53,0.08);
+    border-radius: var(--radius-sm);
+    background: #FAFAFA;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .opt:hover  { border-color: var(--pop1); background: #F5F0FF; }
+  .opt.selected { border-color: var(--accent); background: #F0EBFF; color: #4B2FBE; }
+  .opt-icon {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .opt.selected .opt-icon { background: #DDD4FF; }
+
+  /* NAV */
+  .nav { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-back {
+    flex: 0 0 auto; padding: 0 18px; height: 48px;
+    border: 1.5px solid rgba(26,16,53,0.12);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-back:hover { background: var(--bg); }
+  .btn-next {
+    flex: 1; height: 48px; border: none;
+    border-radius: var(--radius-sm);
+    background: var(--ink); color: #fff;
+    font-size: 15px; font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s;
+  }
+  .btn-next:disabled { opacity: 0.22; cursor: not-allowed; }
+  .btn-next:not(:disabled):hover { background: var(--accent); transform: translateY(-1px); }
+  .btn-next:not(:disabled):active { transform: scale(0.98); }
+
+  /* RESULT */
+  #result { display: none; width: calc(100% - 48px); max-width: 480px; margin-top: 20px; }
+
+  .result-hero {
+    border-radius: var(--radius);
+    padding: 34px 24px 28px;
+    text-align: center;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero.straight { background: linear-gradient(135deg,#D8D0FF,#EDE8FF); }
+  .result-hero.wave     { background: linear-gradient(135deg,#FFD6EA,#FFF0F6); }
+  .result-hero.natural  { background: linear-gradient(135deg,#C2F2E6,#EDFAF6); }
+
+  .result-emoji {
+    font-size: 60px; margin-bottom: 14px; display: block;
+    animation: pop 0.5s cubic-bezier(.18,.89,.32,1.28) both;
+    animation-delay: 0.08s;
+  }
+  @keyframes pop {
+    from { transform: scale(0.4); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .result-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 13px; border-radius: 40px;
+    margin-bottom: 10px;
+  }
+  .straight .result-tag { background: rgba(124,92,252,0.13); color: #4B2FBE; }
+  .wave .result-tag     { background: rgba(255,100,150,0.13); color: #B0245A; }
+  .natural .result-tag  { background: rgba(0,160,110,0.13); color: #006644; }
+
+  .result-name {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 34px; font-weight: 800;
+    line-height: 1.1; margin-bottom: 10px; color: var(--ink);
+  }
+  .result-desc {
+    font-size: 13px; color: var(--muted);
+    line-height: 1.8; max-width: 290px; margin: 0 auto;
+  }
+
+  .curation-box {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: 0 4px 32px rgba(26,16,53,0.08);
+    margin-bottom: 14px;
+  }
+  .curation-title {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.07em; color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .curation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cur-item {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 13px;
+  }
+  .cur-cat {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .cur-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-size: 12px; font-weight: 500;
+    padding: 3px 10px; border-radius: 40px;
+  }
+  .straight .tag { background: #EDE8FF; color: #4B2FBE; }
+  .wave .tag     { background: #FFE4F0; color: #B0245A; }
+  .natural .tag  { background: #D4F5EC; color: #006644; }
+
+  .btn-retry {
+    width: 100%; padding: 14px;
+    border: 1.5px solid rgba(26,16,53,0.12);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--muted); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .btn-retry:hover { background: var(--bg); color: var(--ink); }
+
+  /* DECO */
+  .deco-blob {
+    position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: -1;
+    filter: blur(70px); opacity: 0.3;
+  }
+  .deco-blob-1 { width: 300px; height: 300px; background: var(--pop1); top: 30vh; right: -80px; }
+  .deco-blob-2 { width: 220px; height: 220px; background: var(--pop2); bottom: 20vh; left: -60px; }
+
+  @media (max-width: 520px) {
+    .card, #result { width: calc(100% - 32px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="deco-blob deco-blob-1"></div>
+<div class="deco-blob deco-blob-2"></div>
+
+<div class="hero">
+  <div class="hero-eyebrow">✦ 2025 Summer Vacation</div>
+  <h1 class="hero-title">내 체형에 딱 맞는<br><em>바캉스 룩</em> 찾기</h1>
+  <p class="hero-sub">7가지 질문에 답하면<br>나만을 위한 스타일을 알려줄게요 👙</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-header">
+    <span class="progress-label">진행중</span>
+    <span class="progress-count" id="prog-text">1 / 7</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress" style="width:14.3%"></div>
+  </div>
+</div>
+
+<div class="card" id="quiz-card">
+
+  <!-- Q1 -->
+  <div class="step active" data-step="0">
+    <p class="q-num">QUESTION 01</p>
+    <p class="q-text">쇼핑할 때 <strong>제일 먼저 손이 가는</strong> 옷 스타일은?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">🪄</span><span>깔끔하고 미니멀한 베이직 아이템</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">🎀</span><span>플리츠, 프릴, 리본 등 여성스러운 아이템</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🌿</span><span>루즈하고 편안한 오버사이즈 아이템</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-next" id="next0" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="step" data-step="1">
+    <p class="q-num">QUESTION 02</p>
+    <p class="q-text">평소 즐겨 입는 <strong>바지 핏</strong>은 뭐예요?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">✏️</span><span>슬림 or 스트레이트 — 다리 라인이 드러나는 핏</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">🌸</span><span>플레어 or 미디 — 아래로 퍼지는 실루엣</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🌊</span><span>와이드 or 배기 — 여유 있고 루즈한 핏</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next1" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="step" data-step="2">
+    <p class="q-num">QUESTION 03</p>
+    <p class="q-text">원피스를 고른다면 <strong>어떤 실루엣</strong>이 제일 끌려요?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">⚡</span><span>미니 or 숏 — 깔끔하게 딱 떨어지는 느낌</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">🎠</span><span>플레어 or 미디 — 살랑살랑 퍼지는 느낌</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🌙</span><span>맥시 or 롱 — 길게 흘러내리는 느낌</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next2" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="step" data-step="3">
+    <p class="q-num">QUESTION 04</p>
+    <p class="q-text">친구들이 나한테 <strong>자주 하는 말</strong>은?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">💎</span><span>"너 입으면 뭐든 깔끔해 보여"</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">💕</span><span>"너 진짜 여성스럽고 귀엽다"</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🔥</span><span>"너 옷 입는 거 힙하고 멋있어"</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next3" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="step" data-step="4">
+    <p class="q-num">QUESTION 05</p>
+    <p class="q-text">상의를 고를 때 <strong>선호하는 기장</strong>은?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">📐</span><span>허리선에 딱 오는 정사이즈 기장</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">✂️</span><span>크롭 — 배꼽 위로 짧게 올라오는 기장</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🪢</span><span>롱 or 오버 — 엉덩이까지 내려오는 기장</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next4" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="step" data-step="5">
+    <p class="q-num">QUESTION 06</p>
+    <p class="q-text">바다에 간다면 <strong>입고 싶은 수영복</strong> 스타일은?</p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">🏄</span><span>래시가드 — 활동적이고 깔끔하게</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">🩱</span><span>비키니 + 시스루 커버업 — 볼륨감 살리게</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🌺</span><span>맥시 원피스 수영복 — 여유롭고 시크하게</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next5" disabled="" onclick="nextStep()">다음으로 →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="step" data-step="6">
+    <p class="q-num">QUESTION 07</p>
+    <p class="q-text">옷을 살 때 가장 중요하게 보는 건 <strong>뭐예요?</strong></p>
+    <div class="options">
+      <button class="opt" data-val="S" onclick="pick(this)">
+        <span class="opt-icon">🧊</span><span>핏이 깔끔하고 체형이 잘 드러나는지</span>
+      </button>
+      <button class="opt" data-val="W" onclick="pick(this)">
+        <span class="opt-icon">🎁</span><span>소재가 부드럽고 디테일이 예쁜지</span>
+      </button>
+      <button class="opt" data-val="N" onclick="pick(this)">
+        <span class="opt-icon">🛋️</span><span>편안하고 움직임이 자유로운지</span>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn-back" onclick="prevStep()">← 이전</button>
+      <button class="btn-next" id="next6" disabled="" onclick="showResult()">결과 보기 ✨</button>
+    </div>
+  </div>
+
+</div><!-- .card -->
+
+<div id="result"></div>
+
+<script>
+const TOTAL = 7;
+const answers = Array(TOTAL).fill(null);
+let cur = 0;
+
+const DATA = {
+  S: {
+    cls: 'straight', tag: 'Straight Type', emoji: '✨',
+    name: '스트레이트',
+    desc: '깔끔하고 직선적인 라인이 가장 큰 매력!\n심플한 베이직 핏과 적당한 두께감 소재가 체형을 자연스럽게 살려줘요.',
+    curation: [
+      { cat: '상의', tags: ['베이직핏'] },
+      { cat: '하의', tags: ['슬림', '스트레이트'] },
+      { cat: '원피스', tags: ['미니', '숏'] },
+      { cat: '비치웨어', tags: ['래시가드'] }
+    ]
+  },
+  W: {
+    cls: 'wave', tag: 'Wave Type', emoji: '🌊',
+    name: '웨이브',
+    desc: '부드러운 곡선과 여성스러운 볼륨감이 매력!\n허리를 강조하는 플레어 실루엣이 가장 예쁘게 어울려요.',
+    curation: [
+      { cat: '상의', tags: ['크롭', '숏'] },
+      { cat: '하의', tags: ['플레어', '미디'] },
+      { cat: '원피스', tags: ['플레어', '미디'] },
+      { cat: '비치웨어', tags: ['비키니', '커버업'] }
+    ]
+  },
+  N: {
+    cls: 'natural', tag: 'Natural Type', emoji: '🌿',
+    name: '내추럴',
+    desc: '골격감 있고 시크한 분위기가 매력!\n오버핏과 길게 흘러내리는 소재로 자연스럽고 힙하게.',
+    curation: [
+      { cat: '상의', tags: ['루즈', '오버핏'] },
+      { cat: '하의', tags: ['와이드', '루즈'] },
+      { cat: '원피스', tags: ['맥시', '롱'] },
+      { cat: '비치웨어', tags: ['맥시드레스'] }
+    ]
+  }
+};
+
+function pick(btn) {
+  btn.closest('.options').querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const si = parseInt(btn.closest('.step').dataset.step);
+  answers[si] = btn.dataset.val;
+  document.getElementById('next' + si).disabled = false;
+}
+
+function updateProgress(step) {
+  const pct = ((step + 1) / TOTAL) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = (step + 1) + ' / ' + TOTAL;
+}
+
+function nextStep() {
+  document.querySelectorAll('.step')[cur].classList.remove('active');
+  cur++;
+  document.querySelectorAll('.step')[cur].classList.add('active');
+  updateProgress(cur);
+}
+
+function prevStep() {
+  document.querySelectorAll('.step')[cur].classList.remove('active');
+  cur--;
+  document.querySelectorAll('.step')[cur].classList.add('active');
+  updateProgress(cur);
+}
+
+function showResult() {
+  const counts = { S:0, W:0, N:0 };
+  answers.forEach(a => { if (a) counts[a]++; });
+  const type = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+  const d = DATA[type];
+
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('prog-text').textContent = '완료 🎉';
+  document.getElementById('quiz-card').style.display = 'none';
+
+  const tagsHtml = tags => tags.map(t => `<span class="tag">${t}</span>`).join('');
+  const curHtml = d.curation.map(c => `
+    <div class="cur-item">
+      <p class="cur-cat">${c.cat}</p>
+      <div class="cur-tags">${tagsHtml(c.tags)}</div>
+    </div>`).join('');
+
+  document.getElementById('result').innerHTML = `
+    <div class="result-hero ${d.cls}">
+      <span class="result-emoji">${d.emoji}</span>
+      <div class="result-tag">${d.tag}</div>
+      <p class="result-name">${d.name} 타입</p>
+      <p class="result-desc">${d.desc.replace('\n','<br>')}</p>
+    </div>
+    <div class="curation-box ${d.cls}">
+      <p class="curation-title">✦ 나한테 딱인 바캉스 스타일 키워드</p>
+      <div class="curation-grid">${curHtml}</div>
+    </div>
+    <button class="btn-retry" onclick="retry()">🔄 다시 진단하기</button>
+  `;
+  document.getElementById('result').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function retry() {
+  answers.fill(null);
+  cur = 0;
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.step')[0].classList.add('active');
+  document.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  for (let i = 0; i < TOTAL; i++) {
+    const btn = document.getElementById('next' + i);
+    if (btn) btn.disabled = true;
+  }
+  document.getElementById('progress').style.width = (1/TOTAL*100) + '%';
+  document.getElementById('prog-text').textContent = '1 / ' + TOTAL;
+  document.getElementById('quiz-card').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+}
+</script>
+
+
+</body></html>
